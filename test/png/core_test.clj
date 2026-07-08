@@ -53,3 +53,20 @@
                            ((fn [t d] (vec (concat (u32 (count d)) (mapv int t) d (u32 0)))) "IEND" [])))
         p (png/parse grammar bytes)]
     (is (= (vec (concat row0-actual row1-actual)) (:pixels p)))))
+
+(defn- rd-bytes [p]
+  (mapv #(bit-and (int %) 0xff) (with-open [in (io/input-stream (io/resource p))] (.readAllBytes in))))
+
+(deftest png-real-file
+  (testing "a real Pillow-written PNG (16x12 RGB8), pixel(x,y) = (x*16, y*20, 128)
+            per the fixture's own generator — org-w3-png had zero real-file
+            coverage before this test (synthetic hand-built chunks only)"
+    (let [p (png/parse grammar (rd-bytes "png/fixtures/pillow.png"))
+          expected (vec (mapcat (fn [y] (mapcat (fn [x] [(* x 16) (* y 20) 128]) (range 16))) (range 12)))]
+      (testing "IHDR"
+        (is (= 16 (get-in p [:ihdr :width])))
+        (is (= 12 (get-in p [:ihdr :height])))
+        (is (= 8 (get-in p [:ihdr :bit-depth])))
+        (is (= :rgb (get-in p [:ihdr :color-type]))))
+      (testing "full pixel buffer matches Pillow's source exactly"
+        (is (= expected (:pixels p)))))))
