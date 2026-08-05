@@ -1,6 +1,6 @@
 # kotoba-lang/org-w3-png
 
-Zero-dep-beyond-`org-ietf-deflate` portable `.cljc` PNG decoder (W3C
+Zero-dep-beyond-`org-ietf-deflate` portable `.cljc` PNG decoder **and encoder** (W3C
 Recommendation, also ISO/IEC 15948). Named `org-w3-png` — same
 `org-w3-<spec>` pattern as `org-w3-svg`/`org-w3-woff` (PNG's canonical spec
 home is `w3.org/TR/png`).
@@ -28,3 +28,31 @@ and Adam7 interlace are not yet unfiltered.
 ```sh
 clojure -M:test
 ```
+
+## Encoding (`png.encode`)
+
+The decoder has been here since the `kasane` extraction and nothing could
+write one. That asymmetry only shows up when something already holds pixels
+and needs a browser to see them — a PDF image XObject decodes to raw samples,
+and raw samples are not a picture anyone can display.
+
+```clojure
+(require '[png.encode :as encode])
+(encode/encode pixels {:width 640 :height 480 :color :rgb})
+;; => PNG bytes
+```
+
+Bit depth 8, colour types `:gray :gray-alpha :rgb :rgba`, no interlace, one
+`IDAT`, filter type 0 on every scanline. That is exactly what `png.core/parse`
+can read back — R0 there does not unfilter sub-byte depths or Adam7 — so the
+pair round-trips and a writer that emitted something its own reader could not
+take would be a writer nobody could check. 16-bit is refused rather than
+truncated; a sample count that does not fit the geometry is refused rather
+than padded, because padding produces a file that opens and is wrong (the
+image skewed diagonally, which is what a row-length error always looks like
+and never says).
+
+Per-line filter selection is deliberately absent — see the ns docstring. The
+tests check the output against `javax.imageio` as well as against `png.core`,
+because a writer checked only by its own reader can be wrong in the same
+direction twice.
