@@ -47,7 +47,19 @@
      (bit-and (unsigned-bit-shift-right n 8) 0xff)
      (bit-and n 0xff)]))
 
-(defn- ascii [s] (mapv #(bit-and (int %) 0xff) s))
+(defn- ascii
+  "Chunk-type bytes for an ASCII string.
+
+  Iterating a string gives Characters on the JVM and one-character strings in
+  ClojureScript, and `(int \"I\")` there is 0, not 73 -- so the JVM wrote
+  \"IHDR\" and ClojureScript wrote four zero bytes. Nothing said so: the file
+  still had a plausible length, a correct CRC over the zeroed type, and a
+  signature, so it failed later, in the reader, as a truncated chunk. The
+  reader half of this repo is portable and the tests were JVM-only, which is
+  the only reason it could stay that way. `deflate.gzip` already carried the
+  conditional; this is the same one."
+  [s]
+  (mapv #(bit-and #?(:clj (int %) :cljs (.charCodeAt % 0)) 0xff) s))
 
 (defn chunk-bytes
   "One chunk: length, type, data, CRC-32 **over the type and the data**.
