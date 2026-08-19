@@ -25,9 +25,23 @@ and Adam7 interlace are not yet unfiltered.
 
 ## Test
 
+Both runtimes, and both are load-bearing.
+
 ```sh
-clojure -M:test
+clojure -M:test                        # JVM: everything, incl. the javax.imageio oracle
+nbb --classpath src:test run-tests.cljs   # ClojureScript: png.encode-test
 ```
+
+`png.encode-test` is `.cljc` and `png.encode-jvm-test` is not, deliberately.
+Until 2026-08-19 the writer's whole suite was `.clj`, and under ClojureScript
+`(int c)` over a string gives 0 -- so every chunk type was written as four
+zero bytes, and every PNG this repository produced outside the JVM was
+unreadable. The file still had a signature, a plausible length and a correct
+CRC over the zeroed type, so nothing said so until a reader ran off the end of
+the data. **An assertion parked in a `.clj` file is an assertion ClojureScript
+never makes.** `png.core-test` is still JVM-only; the reader is nevertheless
+exercised on both runtimes, because every image the writer tests produce is
+read back through `png.core/parse`.
 
 ## Encoding (`png.encode`)
 
