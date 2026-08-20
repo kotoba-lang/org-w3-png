@@ -1,5 +1,12 @@
 #!/usr/bin/env nbb
-;; nbb --classpath src:test run-tests.cljs   (from the repository root)
+;;   nbb --classpath "src:test:$(clojure -Spath -M:test)" run-tests.cljs
+;;
+;; `src:test` alone is NOT enough and was what this line used to say: the
+;; writer reaches `deflate.core`, which is a git dep, and nbb does not read
+;; deps.edn — so the documented command died with `Could not find namespace:
+;; deflate.core`, which reads as "this repo does not run on nbb" rather than
+;; as a missing classpath entry. On the murakumo fleet the equivalent is
+;; `:ship-git-deps true`.
 ;;
 ;; The ClojureScript half of the suite. `png.core-test` and
 ;; `png.encode-jvm-test` are `.clj` -- the first is not ported yet, the second
