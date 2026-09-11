@@ -1,5 +1,5 @@
-#!/usr/bin/env nbb
-;;   nbb --classpath "src:test:$(clojure -Spath -M:test)" run-tests.cljk
+#!/usr/bin/env kbb
+;;   kbb --backend sci --classpath "src:test:$(kbb -Spath -M:test)" run-tests.cljk
 ;;
 ;; `src:test` alone is NOT enough and was what this line used to say: the
 ;; writer reaches `deflate.core`, which is a git dep, and nbb does not read

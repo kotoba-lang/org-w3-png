@@ -20,7 +20,7 @@
 (def grammar
   (edn/read-string
    #?(:clj (slurp (io/resource "png/grammar.edn"))
-      ;; Run from the repository root: `nbb --classpath src:test run-tests.cljk`.
+      ;; Run from the repository root: `kbb --backend sci --classpath src:test run-tests.cljk`.
       :cljs (fs/readFileSync "resources/png/grammar.edn" "utf8"))))
 
 (defn- refusal [f]

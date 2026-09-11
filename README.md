@@ -28,8 +28,8 @@ and Adam7 interlace are not yet unfiltered.
 Both runtimes, and both are load-bearing.
 
 ```sh
-clojure -M:test                        # JVM: everything, incl. the javax.imageio oracle
-nbb --classpath src:test run-tests.cljk   # ClojureScript: png.encode-test
+kbb -M:test                        # JVM: everything, incl. the javax.imageio oracle
+kbb --backend sci --classpath src:test run-tests.cljk   # ClojureScript: png.encode-test
 ```
 
 `png.encode-test` is `.cljc` and `png.encode-jvm-test` is not, deliberately.
