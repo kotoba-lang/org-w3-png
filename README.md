@@ -29,7 +29,7 @@ Both runtimes, and both are load-bearing.
 
 ```sh
 clojure -M:test                        # JVM: everything, incl. the javax.imageio oracle
-nbb --classpath src:test run-tests.cljs   # ClojureScript: png.encode-test
+nbb --classpath src:test run-tests.cljk   # ClojureScript: png.encode-test
 ```
 
 `png.encode-test` is `.cljc` and `png.encode-jvm-test` is not, deliberately.
