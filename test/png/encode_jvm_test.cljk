@@ -11,6 +11,9 @@
   (:require [kotoba.test :refer [deftest is testing]]
             [png.encode :as encode]))
 
+;; The body is JVM-only (javax.imageio): kbb skips it.
+#?(:clj
+ (do
 (defn- ->image
   "Through the JVM's own PNG reader, or nil if it refuses the bytes."
   [bytes]
@@ -34,4 +37,4 @@
   (let [pixels [255 0 0 255,  0 255 0 128]
         image (->image (encode/encode pixels {:width 2 :height 1 :color :rgba}))]
     (is (= 255 (bit-and (bit-shift-right (.getRGB image 0 0) 24) 0xff)))
-    (is (= 128 (bit-and (bit-shift-right (.getRGB image 1 0) 24) 0xff)))))
+    (is (= 128 (bit-and (bit-shift-right (.getRGB image 1 0) 24) 0xff)))))))
