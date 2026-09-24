@@ -1,6 +1,6 @@
 (ns png.core-test
   (:require [kotoba.test :refer [deftest is testing]]
-            [clojure.edn :as edn]
+            [kotoba.lang.edn :as edn]
             [clojure.java.io :as io]
             [png.core :as png]))
 
