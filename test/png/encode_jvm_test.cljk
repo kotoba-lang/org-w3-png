@@ -8,7 +8,7 @@
   `.cljc` and runs on both runtimes. Keeping these apart is not tidiness: an
   assertion parked in a `.clj` file is an assertion ClojureScript never makes,
   and that is how the chunk-type bug survived."
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [png.encode :as encode]))
 
 (defn- ->image

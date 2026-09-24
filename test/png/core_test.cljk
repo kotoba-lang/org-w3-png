@@ -1,5 +1,5 @@
 (ns png.core-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [clojure.edn :as edn]
             [clojure.java.io :as io]
             [png.core :as png]))
