@@ -10,4 +10,7 @@
        ;; kotoba.test (clojure.test-compatible surface), not clojure.test --
         ;; scripts/migrate-clojure-test-to-kotoba-test.cljk. Explicit floor.
         io.github.kotoba-lang/test {:git/url "https://github.com/kotoba-lang/test.git"
-                                    :git/sha "2ab4885f99fd25552d380d0f6b0b54c5a72eb7ae"}}}
+                                    :git/sha "2ab4885f99fd25552d380d0f6b0b54c5a72eb7ae"}
+        ;; deflate.core / deflate.zlib: png.core requires it, and kbb reads git
+        ;; deps only from this file -- it was missing, so kbb could not load png.core.
+        io.github.kotoba-lang/org-ietf-deflate {:git/sha "77bb606b63f304c7a6816a451136b671dc922f13"}}}
