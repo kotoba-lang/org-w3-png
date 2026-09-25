@@ -7,7 +7,7 @@
             [deflate.zlib :as zlib*]
             [png.core :as png]
             [png.grammar :as g]
-            #?(:clj [clojure.java.io :as io])
+            #?(:clj [kotoba.io :as io])
             #?(:cljs ["fs" :as fs])))
 
 (def grammar g/grammar)

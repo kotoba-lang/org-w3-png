@@ -14,7 +14,7 @@
             [kotoba.test :refer [deftest is testing]]
             [png.core :as png]
             [png.encode :as encode]
-            #?(:clj [clojure.java.io :as io])
+            #?(:clj [kotoba.io :as io])
             #?(:cljs ["fs" :as fs])))
 
 (def grammar

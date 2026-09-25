@@ -5,7 +5,7 @@
             [png.core :as png]
             [png.encode :as encode]
             [png.grammar :as g]
-            #?(:clj [clojure.java.io :as io])
+            #?(:clj [kotoba.io :as io])
             #?(:cljs ["fs" :as fs])))
 
 (def resource-text
